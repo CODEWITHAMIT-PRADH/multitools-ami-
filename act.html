@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Age Calculator</title>
+  <style>
+    :root {
+      --primary: #4361ee;
+      --primary-dark: #3a56d4;
+      --secondary: #7209b7;
+      --light: #f8f9fa;
+      --dark: #212529;
+      --success: #4cc9f0;
+      --shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      --transition: all 0.3s ease;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 20px;
+      padding: 15px 25px;
+      background: white;
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .logo-icon {
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 24px;
+    }
+
+    .logo-text {
+      font-size: 28px;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .container {
+      background: #fff;
+      padding: 40px 30px;
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      text-align: center;
+      width: 100%;
+      max-width: 450px;
+      transition: var(--transition);
+    }
+
+    .container:hover {
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    h1 {
+      color: var(--primary);
+      margin-bottom: 25px;
+      font-size: 2.2rem;
+      font-weight: 700;
+      position: relative;
+      display: inline-block;
+    }
+
+    h1:after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 4px;
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      border-radius: 2px;
+    }
+
+    .input-group {
+      margin-bottom: 25px;
+      text-align: left;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--dark);
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    input[type="date"] {
+      padding: 14px 16px;
+      width: 100%;
+      font-size: 1rem;
+      border: 2px solid #e1e5ee;
+      border-radius: 12px;
+      transition: var(--transition);
+      outline: none;
+      background-color: var(--light);
+    }
+
+    input[type="date"]:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+    }
+
+    button {
+      padding: 14px 30px;
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      color: #fff;
+      font-size: 1.1rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: var(--transition);
+      box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
+      width: 100%;
+      letter-spacing: 0.5px;
+    }
+
+    button:hover {
+      background: linear-gradient(to right, var(--primary-dark), #6511a8);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(67, 97, 238, 0.4);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    #result {
+      margin-top: 30px;
+      padding: 20px;
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--dark);
+      background-color: #f8f9ff;
+      border-radius: 12px;
+      border-left: 5px solid var(--success);
+      min-height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      transition: var(--transition);
+      opacity: 0;
+      transform: translateY(10px);
+    }
+
+    #result.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .age-details {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 25px;
+      gap: 15px;
+    }
+
+    .age-box {
+      flex: 1;
+      padding: 15px;
+      background: linear-gradient(135deg, #4361ee, #3a0ca3);
+      color: white;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(67, 97, 238, 0.2);
+    }
+
+    .age-value {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+
+    .age-label {
+      font-size: 0.9rem;
+      opacity: 0.9;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 30px 20px;
+      }
+      
+      h1 {
+        font-size: 1.8rem;
+      }
+      
+      .age-details {
+        flex-direction: column;
+      }
+      
+      .logo-container {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+      }
+    }
+
+    /* Animation for the result */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .fade-in {
+      animation: fadeIn 0.5s ease forwards;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="logo-container">
+    <div class="logo-icon">AMI</div>
+    <div class="logo-text">AMI Product</div>
+  </div>
+
+  <div class="container">
+    <h1>Age Calculator</h1>
+    
+    <div class="input-group">
+      <label for="dob">Select Your Date of Birth</label>
+      <input type="date" id="dob" />
+    </div>
+    
+    <button onclick="calculateAge()">Calculate Age</button>
+    
+    <div id="result"></div>
+    
+    <div class="age-details" id="ageDetails" style="display: none;">
+      <div class="age-box">
+        <div class="age-value" id="years">0</div>
+        <div class="age-label">Years</div>
+      </div>
+      <div class="age-box">
+        <div class="age-value" id="months">0</div>
+        <div class="age-label">Months</div>
+      </div>
+      <div class="age-box">
+        <div class="age-value" id="days">0</div>
+        <div class="age-label">Days</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function calculateAge() {
+      const dob = document.getElementById("dob").value;
+      const result = document.getElementById("result");
+      const ageDetails = document.getElementById("ageDetails");
+      
+      if (!dob) {
+        result.innerText = "Please select your date of birth.";
+        result.className = "show";
+        ageDetails.style.display = "none";
+        return;
+      }
+
+      const birthDate = new Date(dob);
+      const today = new Date();
+
+      let ageYears = today.getFullYear() - birthDate.getFullYear();
+      let ageMonths = today.getMonth() - birthDate.getMonth();
+      let ageDays = today.getDate() - birthDate.getDate();
+
+      if (ageDays < 0) {
+        ageMonths--;
+        ageDays += new Date(today.getFullYear(), today.getMonth(), 0).getDate();
+      }
+
+      if (ageMonths < 0) {
+        ageYears--;
+        ageMonths += 12;
+      }
+
+      // Update the result text
+      result.innerHTML = `You are <span style="color: #4361ee; font-size: 1.4em;">${ageYears}</span> years, <span style="color: #4361ee; font-size: 1.4em;">${ageMonths}</span> months, and <span style="color: #4361ee; font-size: 1.4em;">${ageDays}</span> days old.`;
+      result.className = "show";
+      
+      // Update the age boxes
+      document.getElementById("years").textContent = ageYears;
+      document.getElementById("months").textContent = ageMonths;
+      document.getElementById("days").textContent = ageDays;
+      
+      // Show the age details boxes
+      ageDetails.style.display = "flex";
+      ageDetails.className = "fade-in";
+    }
+
+    // Set max date to today
+    document.getElementById("dob").max = new Date().toISOString().split("T")[0];
+  </script>
+
+</body>
+</html>
+
+  
